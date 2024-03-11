@@ -1,20 +1,32 @@
 ---
-// using @ because of tsconfig.json -> "@/*":["./src/*"]
-import Layout from "@/layouts/Layout.astro";
+import KonamiCode from "@/components/KonamiCode.astro"
+import Layout from "@/layouts/Layout.astro"
+import Countdown from "@/sections/Countdown.astro"
 
-import Countdown from "@/sections/Countdown.astro";
-import Footer from "@/sections/Footer.astro";
-import Hero from "@/sections/Hero.astro";
-import PrincipalDate from "@/sections/PrincipalDate.astro";
-import Info from "@/sections/Info.astro";
+import Boxing from "@/sections/Boxing.astro"
+import Footer from "@/sections/Footer.astro"
+import Hero from "@/sections/Hero.astro"
+import Info from "@/sections/Info.astro"
+import PresentationVideo from "@/sections/PresentationVideo.astro"
+import PrincipalDate from "@/sections/PrincipalDate.astro"
+import Sponsors from "@/sections/Sponsors.astro"
 ---
 
-<Layout title="La Velada IV">
-  <Hero />
-  <main >
-    <PrincipalDate />
-    <Info />
-    <Countdown />
-  </main>
-  <Footer />
+<Layout
+	description="Web Oficial de La Velada del Año IV, evento de boxeo entre streamers y creadores de contenido, organizado por Ibai Llanos"
+	title="La Velada del Año 4 - Evento de Boxeo de Ibai Llanos"
+>
+	<Hero />
+
+	<main>
+		<PrincipalDate />
+		<Info />
+		<!-- <SelectYourBoxer /> -->
+		<Boxing />
+		<PresentationVideo />
+		<Sponsors />
+		<Countdown />
+	</main>
+	<Footer />
+	<KonamiCode />
 </Layout>
