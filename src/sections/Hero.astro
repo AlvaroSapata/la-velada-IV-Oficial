@@ -1,10 +1,46 @@
 ---
-import HeroLogo from "@/components/HeroLogo.astro";
+import AnimatedX from "@/components/AnimatedX.astro"
+import HeroLogo from "@/components/HeroLogo.astro"
 ---
 
-<section class="flex flex-col justify-center items-center z-0">
-  <span class="text-xl animate-fade-in animate-delay-400 uppercase text-secondary bg-primary px-5 py-1 mb-9 font-medium">
-    VELADA IV OFICIAL
-    </span  >
-  <HeroLogo class=" text-primary animate-fade-in-up w-[300px] h-auto md:w-[600px]" />
+<section class="flex flex-col place-items-center gap-4 lg:gap-9">
+	<h1 class="sr-only bg-black/30">Presentación de la Velada del Año IV</h1>
+	<a
+		class="relative -rotate-6 font-kaushan text-2xl text-white underline-offset-8 transition hover:scale-110 md:text-4xl"
+		href="https://www.twitch.tv/ibai"
+		target="_blank"
+		rel="noopener"
+		title="Enlace al canal de Twitch de Ibai Llanos"
+		aria-label="Enlace al canal de Twitch de Ibai Llanos"
+	>
+		<span class="relative">Twitch.tv/ibai</span>
+	</a>
+	<div class="relative">
+		<AnimatedX />
+		<div
+			class="absolute inset-0 -z-10 m-auto w-full rounded-full bg-black opacity-70 blur-2xl md:size-[400px]"
+		>
+		</div>
+		<HeroLogo class="h-auto w-[250px] overflow-visible md:w-[500px] pt-5" />
+		
+	</div>
 </section>
+<style>
+	a::before {
+		content: "";
+		position: absolute;
+		left: 0;
+		bottom: -2px;
+		width: 100%;
+		height: 3px;
+		background-color: white;
+		transform-origin: right;
+		transform: scaleX(0);
+		transition: transform 0.2s ease-in-out;
+	}
+
+	a:hover::before {
+		transform: scaleX(1);
+		transform-origin: left;
+	}
+</style>

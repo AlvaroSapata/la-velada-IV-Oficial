@@ -13,6 +13,8 @@
     "@astrojs/check": "^0.5.6",
     "@astrojs/tailwind": "^5.1.0",
     "@fontsource-variable/jost": "^5.0.18",
+    "@fontsource/kaushan-script": "^5.0.19",
+    "@fontsource/smooch": "^5.0.19",
     "@midudev/tailwind-animations": "^0.0.7",
     "astro": "^4.4.11",
     "tailwindcss": "^3.4.1",
