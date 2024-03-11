@@ -22,7 +22,7 @@ const { title, description, preloadImgLCP } = Astro.props;
     <SEO
       title={title}
       description={description}
-      preloadImgLCP={preloadImgLCP}
+      preloadImgLCP={preloadImgLCP ?? ""}
     />
   </head>
 
