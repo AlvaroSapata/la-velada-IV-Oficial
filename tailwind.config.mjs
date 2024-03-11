@@ -6,20 +6,22 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-				kaushan: ["Kaushan Script", "cursive"],
-			},
+        kaushan: ["Kaushan Script", "cursive"],
+      },
       colors: {
         primary: "var(--color-primary)",
-        secondary: "#var(--color-secondary)",
-        twitch: "#var(--color-twitch)",
-        ice: "#var(--color-ice)",
+        secondary: "var(--color-secondary)",
+        accent: "var(--color-accent)",
+        twitch: "var(--color-twitch)",
+        ice: "var(--color-ice)",
       },
     },
   },
   plugins: [
     animations,
     function ({ addVariant }) {
-      addVariant("any-hover", "@media (any-hover: hover) {&:hover}");
+      addVariant("any-hover", "@media (any-hover: hover) { &:hover }");
+      addVariant("mobile", "@media (any-hover: none) { & }");
     },
   ],
 };
