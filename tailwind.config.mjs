@@ -5,13 +5,18 @@ export default {
   content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
   theme: {
     extend: {
-		colors:{
-
-			primary: "#333",
-			secondary: "#ddd",
-      twitch: "#6441a4",
-		}
+      colors: {
+        primary: "var(--color-primary)",
+        secondary: "#var(--color-secondary)",
+        twitch: "#var(--color-twitch)",
+        ice: "#var(--color-ice)",
+      },
     },
   },
-  plugins: [animations],
+  plugins: [
+    animations,
+    function ({ addVariant }) {
+      addVariant("any-hover", "@media (any-hover: hover) {&:hover}");
+    },
+  ],
 };
