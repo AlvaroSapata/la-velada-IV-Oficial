@@ -989,33 +989,34 @@ function atcb_secure_url(e, t = !0) {
     !1)
   );
 }
-function atcb_rewrite_html_elements(e, t = !1) {
-  return (
-    (e = e.replace(/<br\s*\/?>/gi, "\n")),
-    (e = t
-      ? e.replace(
-          /\[(|\/)(url|br|hr|p|b|strong|u|i|em|li|ul|ol|h\d)\]|((\|.*)\[\/url\])/gi,
-          ""
-        )
-      : (e = e.replace(
-          /\[(\/|)(br|hr|p|b|strong|u|i|em|li|ul|ol|h\d)\]/gi,
-          "<$1$2>"
-        )).replace(
-          /\[url\]([\w&$+.,:;=~!*'?@^%#|\s\-()/]*)\[\/url\]/gi,
-          function (e, t) {
-            let a =
-              '<a href="' +
-              (t = t.split("|"))[0] +
-              '" target="' +
-              atcbDefaultTarget +
-              '" rel="noopener">';
-            return (
-              1 < t.length && "" != t[1] ? (a += t[1]) : (a += t[0]), a + "</a>"
-            );
-          }
-        ))
-  );
-}
+function atcb_rewrite_html_elements(text, t = !1) {
+    return (
+      (text = text.replace(/<br\s*\/?>/gi, "\n")),
+      (text = t
+        ? text.replace(
+            /\[(|\/)(url|br|hr|p|b|strong|u|i|em|li|ul|ol|h\d)\]|((\|.*)\[\/url\])/gi,
+            ""
+          )
+        : (text = text.replace(
+            /\[(\/|)(br|hr|p|b|strong|u|i|em|li|ul|ol|h\d)\]/gi,
+            "<$1$2>"
+          )).replace(
+            /\[url\]([\w&$+.,:;=~!*'?@^%#|\s\-()/]*)\[\/url\]/gi,
+            function (match, url) {
+              let a =
+                '<a href="' +
+                (url = url.split("|"))[0] +
+                '" target="' +
+                atcbDefaultTarget +
+                '" rel="noopener">';
+              return (
+                1 < url.length && "" != url[1] ? (a += url[1]) : (a += url[0]), a + "</a>"
+              );
+            }
+          ))
+    );
+  }
+  
 function atcb_create_modal(e, t = "", a, _, l) {
   let $ = atcb_generate_bg_overlay("modal", "click"),
     n = document.createElement("div"),
