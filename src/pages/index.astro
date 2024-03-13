@@ -1,32 +1,33 @@
 ---
-import KonamiCode from "@/components/KonamiCode.astro"
-import Layout from "@/layouts/Layout.astro"
-import Countdown from "@/sections/Countdown.astro"
+import Layout from "@/layouts/Layout.astro";
 
-import Boxing from "@/sections/Boxing.astro"
-import Footer from "@/sections/Footer.astro"
-import Hero from "@/sections/Hero.astro"
-import Info from "@/sections/Info.astro"
-import PresentationVideo from "@/sections/PresentationVideo.astro"
-import PrincipalDate from "@/sections/PrincipalDate.astro"
-import Sponsors from "@/sections/Sponsors.astro"
+import Hero from "@/sections/Hero.astro";
+import PrincipalDate from "@/sections/PrincipalDate.astro";
+import Info from "@/sections/Info.astro";
+import SelectYourBoxer from "@/sections/SelectYourBoxer.astro";
+import PresentationVideo from "@/sections/PresentationVideo.astro";
+import Boxing from "@/sections/Boxing.astro";
+import Sponsors from "@/sections/Sponsors.astro";
+import Countdown from "@/sections/Countdown.astro";
+import Footer from "@/sections/Footer.astro";
+import KonamiCode from "@/components/KonamiCode.astro";
 ---
 
 <Layout
-	description="Web Oficial de La Velada del Año IV, evento de boxeo entre streamers y creadores de contenido, organizado por Ibai Llanos"
-	title="La Velada del Año 4 - Evento de Boxeo de Ibai Llanos"
+  description="Web Oficial de La Velada del Año IV, evento de boxeo entre streamers y creadores de contenido, organizado por Ibai Llanos"
+  title="La Velada del Año 4 - Evento de Boxeo de Ibai Llanos"
 >
-	<Hero />
+  <Hero />
 
-	<main>
-		<PrincipalDate />
-		<Info />
-		<!-- <SelectYourBoxer /> -->
-		<Boxing />
-		<PresentationVideo />
-		<Sponsors />
-		<Countdown />
-	</main>
-	<Footer />
-	<KonamiCode />
+  <main>
+    <PrincipalDate />
+    <Info />
+    <SelectYourBoxer />
+    <Boxing />
+    <PresentationVideo />
+    <Sponsors />
+    <Countdown />
+  </main>
+  <Footer />
+  <KonamiCode />
 </Layout>
