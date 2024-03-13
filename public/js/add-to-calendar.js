@@ -823,63 +823,68 @@ function atcb_generate_ical(e) {
     let $ =
       "data:text/calendar;charset=utf-8," + encodeURIComponent(l.join("\r\n"));
     if (
-      ((a = e.iCalFileName || "event-to-save-in-my-calendar"),
-      null != e.icsFile &&
-        "" != e.icsFile &&
-        atcb_secure_url(e.icsFile) &&
-        e.icsFile.startsWith("https://") &&
-        ($ = e.icsFile),
-      isWebView() && (isiOS() || (isAndroid() && isProblematicWebView())))
+      e.icsFile &&
+      e.icsFile !== "" &&
+      atcb_secure_url(e.icsFile) &&
+      e.icsFile.startsWith("https://")
     ) {
-      let n = document.createElement("input");
-      document.body.appendChild(n);
-      var i,
-        c,
-        r = n.contentEditable,
-        o = n.readOnly;
-      (n.value = $),
-        (n.contentEditable = !0),
-        (n.readOnly = !1),
-        isiOS()
-          ? ((i = document.createRange()).selectNodeContents(n),
-            (c = window.getSelection()).removeAllRanges(),
-            c.addRange(i),
-            n.setSelectionRange(0, 999999))
-          : (navigator.clipboard.writeText($), n.select()),
-        (n.contentEditable = r),
-        (n.readOnly = o),
-        document.execCommand("copy"),
-        n.remove(),
-        atcb_create_modal(
-          e,
-          "browser",
-          atcb_translate_hook("WebView iCal", e.language, e),
-          atcb_translate_hook("WebView info description", e.language, e)
-        );
-    } else
-      try {
-        if (window.ActiveXObject) {
-          if (window.ActiveXObject && document.execCommand) {
-            let s = window.open($, atcbDefaultTarget);
-            s.document.close(),
-              s.document.execCommand("SaveAs", !0, a || $),
-              s.close();
+      let fileName = e.iCalFileName || "event-to-save-in-my-calendar";
+      let icsFileUrl = e.icsFile;
+
+      if (isWebView() && (isiOS() || (isAndroid() && isProblematicWebView()))) {
+        let inputElement = document.createElement("input");
+        inputElement.value = icsFileUrl;
+        inputElement.style.position = "absolute";
+        inputElement.style.left = "-9999px";
+        document.body.appendChild(inputElement);
+
+        inputElement.select();
+        inputElement.setSelectionRange(0, 99999); // For mobile devices
+
+        try {
+          if (document.execCommand("copy")) {
+            console.log("URL copied to clipboard");
+            atcb_create_modal(
+              e,
+              "browser",
+              atcb_translate_hook("WebView iCal", e.language, e),
+              atcb_translate_hook("WebView info description", e.language, e)
+            );
+          } else {
+            console.error("Copy to clipboard failed");
           }
-        } else {
-          let d = document.createElement("a");
-          (d.href = $), (d.target = atcbDefaultTarget), (d.download = a);
-          var u = new MouseEvent("click", {
-            view: window,
-            button: 0,
-            bubbles: !0,
-            cancelable: !1,
-          });
-          d.dispatchEvent(u),
-            (window.URL || window.webkitURL).revokeObjectURL(d.href);
+        } catch (error) {
+          console.error("Copy to clipboard failed:", error);
+        } finally {
+          document.body.removeChild(inputElement);
         }
-      } catch (b) {
-        console.error(b);
+      } else {
+        try {
+          let xhr = new XMLHttpRequest();
+          xhr.open("GET", icsFileUrl, true);
+          xhr.responseType = "blob";
+
+          xhr.onload = function () {
+            let blob = xhr.response;
+            let url = window.URL.createObjectURL(blob);
+            let a = document.createElement("a");
+            a.href = url;
+            a.target = atcbDefaultTarget;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+          };
+
+          xhr.send();
+        } catch (error) {
+          console.error("Download failed:", error);
+        }
       }
+    } else {
+      console.error("Invalid or missing icsFile URL");
+    }
   } else window.open(e.icsFile, atcbDefaultTarget);
 }
 function atcb_generate_time(e, t = "delimiters", a = "general", _ = !1) {
@@ -930,8 +935,8 @@ function atcb_generate_time(e, t = "delimiters", a = "general", _ = !1) {
       n.setTime(n.getTime() + s), i.setTime(i.getTime() + s);
     }
     if (
-      ((n = n.toISOString().replace(".000", "")),
-      (i = i.toISOString().replace(".000", "")),
+      ((n = n.toString().replace(".000", "")),
+      (i = i.toString().replace(".000", "")),
       "clean" == t &&
         ((n = n.replace(/-/g, "").replace(/:/g, "")),
         (i = i.replace(/-/g, "").replace(/:/g, ""))),
@@ -963,7 +968,7 @@ function atcb_generate_time(e, t = "delimiters", a = "general", _ = !1) {
         ((i = new Date(Date.UTC($[0], $[1] - 1, $[2]))),
         ("google" != a && "microsoft" != a && "ical" != a) ||
           i.setDate(i.getDate() + 1),
-        i.toISOString().replace(/T(.+)Z/g, ""));
+        i.toString().replace(/T(.+)Z/g, ""));
     "clean" == t && ((b = b.replace(/-/g, "")), (h = h.replace(/-/g, ""))),
       (n = b),
       (i = h);
@@ -990,33 +995,34 @@ function atcb_secure_url(e, t = !0) {
   );
 }
 function atcb_rewrite_html_elements(text, t = !1) {
-    return (
-      (text = text.replace(/<br\s*\/?>/gi, "\n")),
-      (text = t
-        ? text.replace(
-            /\[(|\/)(url|br|hr|p|b|strong|u|i|em|li|ul|ol|h\d)\]|((\|.*)\[\/url\])/gi,
-            ""
-          )
-        : (text = text.replace(
-            /\[(\/|)(br|hr|p|b|strong|u|i|em|li|ul|ol|h\d)\]/gi,
-            "<$1$2>"
-          )).replace(
-            /\[url\]([\w&$+.,:;=~!*'?@^%#|\s\-()/]*)\[\/url\]/gi,
-            function (match, url) {
-              let a =
-                '<a href="' +
-                (url = url.split("|"))[0] +
-                '" target="' +
-                atcbDefaultTarget +
-                '" rel="noopener">';
-              return (
-                1 < url.length && "" != url[1] ? (a += url[1]) : (a += url[0]), a + "</a>"
-              );
-            }
-          ))
-    );
-  }
-  
+  return (
+    (text = text.replace(/<br\s*\/?>/gi, "\n")),
+    (text = t
+      ? text.replace(
+          /\[(|\/)(url|br|hr|p|b|strong|u|i|em|li|ul|ol|h\d)\]|((\|.*)\[\/url\])/gi,
+          ""
+        )
+      : (text = text.replace(
+          /\[(\/|)(br|hr|p|b|strong|u|i|em|li|ul|ol|h\d)\]/gi,
+          "<$1$2>"
+        )).replace(
+          /\[url\]([\w&$+.,:;=~!*'?@^%#|\s\-()/]*)\[\/url\]/gi,
+          function (url) {
+            let a =
+              '<a href="' +
+              (url = url.split("|"))[0] +
+              '" target="' +
+              atcbDefaultTarget +
+              '" rel="noopener">';
+            return (
+              1 < url.length && "" != url[1] ? (a += url[1]) : (a += url[0]),
+              a + "</a>"
+            );
+          }
+        ))
+  );
+}
+
 function atcb_create_modal(e, t = "", a, _, l) {
   let $ = atcb_generate_bg_overlay("modal", "click"),
     n = document.createElement("div"),
