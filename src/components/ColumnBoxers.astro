@@ -76,7 +76,7 @@ const { boxers, class: className = "", selectedBoxerId } = Astro.props
 
 		&::after {
 			content: "aliada";
-			@apply pointer-events-none absolute bottom-0 z-50 font-atomic text-2xl text-green-500;
+			@apply pointer-events-none absolute bottom-0 z-50 text-2xl text-green-500;
 			text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 		}
 	}
@@ -88,7 +88,7 @@ const { boxers, class: className = "", selectedBoxerId } = Astro.props
 
 		&::after {
 			content: "versus";
-			@apply pointer-events-none absolute bottom-0 z-50 font-atomic text-2xl text-red-500;
+			@apply pointer-events-none absolute bottom-0 z-50 text-2xl text-red-500;
 			text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 		}
 	}
